@@ -1,0 +1,58 @@
+Step by Step Process:
+
+Table Joins: We start by joining the Students and Subjects tables to ensure that all combinations of students and subjects are considered. This is achieved using a CROSS JOIN.
+
+SELECT Students.student_id, Students.student_name, Subjects.subject_name
+FROM Students  
+CROSS JOIN Subjects;
+
+The result of this step creates a temporary table with all possible combinations of students and subjects.
+
+LEFT JOIN with Examinations: Next, we perform a LEFT JOIN with the Examinations table to include information about the exams attended by students. The condition for the join is that both the student ID and subject name must match between the Students and Examinations tables.
+
+SELECT Students.student_id, Students.student_name, Subjects.subject_name
+FROM Students  
+CROSS JOIN Subjects 
+LEFT JOIN Examinations ON Students.student_id = Examinations.student_id 
+                      AND Subjects.subject_name = Examinations.subject_name;
+
+This step ensures that we capture all students and subjects, even if there are no corresponding exam records.
+
+Counting Exam Attendances: We use the COUNT function to determine the number of times each student attended each exam. The COUNT function is applied to the Examinations.student_id column.
+
+SELECT Students.student_id, Students.student_name, Subjects.subject_name, COUNT(Examinations.student_id) as attended_exams
+FROM Students  
+CROSS JOIN Subjects 
+LEFT JOIN Examinations ON Students.student_id = Examinations.student_id 
+                      AND Subjects.subject_name = Examinations.subject_name;
+
+Now, each row includes the student ID, student name, subject name, and the count of exams attended by that student for each subject.
+
+GROUP BY Clause: To aggregate the counts correctly, we use the GROUP BY clause. We group the results based on the student ID, student name, and subject name.
+
+SELECT Students.student_id, Students.student_name, Subjects.subject_name, COUNT(Examinations.student_id) as attended_exams
+FROM Students  
+CROSS JOIN Subjects 
+LEFT JOIN Examinations ON Students.student_id = Examinations.student_id 
+                      AND Subjects.subject_name = Examinations.subject_name
+GROUP BY Students.student_id, Students.student_name, Subjects.subject_name;
+
+This ensures that we get a count of attended exams for each student and each subject.
+
+ORDER BY Clause: Finally, we use the ORDER BY clause to sort the result set. We order the rows by student ID and subject name.
+
+SELECT Students.student_id, Students.student_name, Subjects.subject_name, COUNT(Examinations.student_id) as attended_exams
+FROM Students  
+CROSS JOIN Subjects 
+LEFT JOIN Examinations ON Students.student_id = Examinations.student_id 
+                      AND Subjects.subject_name = Examinations.subject_name
+GROUP BY Students.student_id, Students.student_name, Subjects.subject_name
+ORDER BY Students.student_id, Subjects.subject_name;
+
+The result is a well-organized table showing the number of times each student attended each exam, ordered by student ID and subject name.
+
+This blog post has demonstrated a step-by-step analysis of a SQL query designed to count the number of times each student attended each exam. We’ve discussed the importance of table aliases, proper column selection, and the correct application of aggregate functions. The refined code ensures accuracy and readability,
+
+providing a clear solution to the given problem. Whether you are a beginner or an experienced SQL user, understanding the nuances of query optimization is essential for producing efficient and effective code.
+
+
