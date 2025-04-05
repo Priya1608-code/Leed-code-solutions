@@ -1,0 +1,2 @@
+select class from (select class, count(student) c from courses group by class) P
+where c >=5
