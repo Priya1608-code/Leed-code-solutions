@@ -1,0 +1,2 @@
+select max(num) as num from (select num,count(num) N from mynumbers group by num) P
+where N=1
