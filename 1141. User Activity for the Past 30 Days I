@@ -1,0 +1,15 @@
+SELECT
+     activity_date as day,
+    COUNT(DISTINCT user_id) as active_users
+    
+FROM Activity
+where 
+    datediff(day,'2019-07-27', activity_date) < 30
+        and
+    activity_date >= '2019-06-27'
+GROUP BY activity_date
+
+Explanation- we have to find count of user_id as per daily activity for example on 20th there were 2 user action(1 and 2)
+, on 21st there were also 2 user active and on 25th there was 1 user active(4) but the criteria said we need the 
+count for a period of "30 days" ending "2019-07-27" inclusively.
+That is why I put the additional condition (activity_date >= '2019-06-27')
